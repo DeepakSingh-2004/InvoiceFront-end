@@ -1,19 +1,25 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080", // Spring Boot backend
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Automatically attach JWT token
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    if (token) {
+
+    // ✅ Don't attach token to login/signup
+    if (
+      token &&
+      !config.url.includes("/auth/login") &&
+      !config.url.includes("/auth/signup")
+    ) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)

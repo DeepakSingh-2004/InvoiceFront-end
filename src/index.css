@@ -1,5 +1,3 @@
-
-/* RESET DEFAULT BROWSER MARGIN */
 * {
   margin: 0;
   padding: 0;
@@ -12,11 +10,13 @@ html, body {
   background-color: #1e1e1e;
 }
 
-/* Full page center */
-.login-page {
+
+/* ************Login page Css ********************/
+/*Full page center */
+  .login-page {
   min-height: 100vh;
-  width: 100vw;
   display: flex;
+  width: 100vw;
   align-items: center;
   justify-content: center;
   background-color: #1e1e1e;
@@ -63,4 +63,446 @@ html, body {
 
 .login-box button:hover {
   background: #4338ca;
+}
+/* Login link */
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-link span {
+  color: #2563eb;
+  cursor: pointer;
+}/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* **************Signup Page Css *****************/
+Signup text
+
+.signup-text {
+  margin-top: 15px;
+  color: #000000;
+  font-size: 14px;
+}
+
+.signup-link {
+  color: #4f46e5;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* FULL PAGE (like Laravel page) */
+.signup-page {
+  min-height: 100vh;
+  background: #0f172a;
+  padding: 60px 20px;
+  color:white;
+}
+
+/* Page title */
+.signup-title {
+  max-width: 350px;
+  margin: auto;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+/* Wide form */
+.signup-form {
+  max-width: 350px;
+  margin: auto;
+  background: rgb(194, 150, 150);
+  padding: 40px;
+  border-radius: 6px;
+  color: black;
+}
+
+/* Labels */
+.signup-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* Inputs */
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #030202;
+  border-radius: 4px;
+}
+
+/*createAccount*/
+.createAccount{
+  color: #1f2937;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Button */
+.signup-form button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signup-form button:hover {
+  background: #1e40af;
+}
+
+
+/* *********************** Dashboard CSS Page *******************/
+
+/* FULL PAGE */
+.auth-container {
+  min-height: 100vh;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* CARD */
+.auth-card {
+  width: 380px;
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* BRAND */
+.brand-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #9b3c1f;
+  margin-bottom: 8px;
+}
+
+/* HEADINGS */
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.auth-card label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 14px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #cbd5f5;
+  font-size: 14px;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* BUTTON */
+.primary-btn {
+  width: 100%;
+  margin-top: 22px;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #1e40af;
+}
+
+/* LOGIN TEXT */
+.login-text {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 14px;
+  color: #374151;
+}
+
+.login-text span {
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #0f172a;
+  color: #fff;
+}
+
+/* Layout */
+.dash-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #111827;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.sidebar li {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background: #1f2937;
+}
+
+.logout-btn {
+  background: #ef4444;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Main */
+.dash-main {
+  flex: 1;
+  padding: 30px;
+}
+
+.dash-main h1 {
+  margin-bottom: 30px;
+}
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #1f2937;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-card p {
+  color: #9ca3af;
+}
+
+/* Panels */
+.panel {
+  background: #1f2937;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #374151;
+  text-align: left;
+}
+
+th {
+  color: #9ca3af;
+} 
+/* ============== DASHBOARD LAYOUT ===== */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e293b, #020617);
+  color: #e5e7eb;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 230px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 35px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex: 1;
+}
+
+.sidebar li {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.logout-btn {
+  background: #ef4444;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== MAIN ===== */
+.dashboard-main {
+  flex: 1;
+  padding: 35px;
+}
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+/* ===== STATS ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.stat {
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.stat p {
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+/* ===== GLASS EFFECT ===== */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== CONTENT GRID ===== */
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.wide {
+  grid-column: span 1;
+}
+
+/* ===== TABLE ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+th {
+  color: #9ca3af;
+  text-align: left;
+}
+
+/* ===== SALES LIST ===== */
+.sales-list {
+  list-style: none;
+  padding: 0;
+}
+
+.sales-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
