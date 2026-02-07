@@ -14,13 +14,15 @@
 //     loadDashboard();
 //   }, []);
 
+// // change this file
 //   const loadDashboard = async () => {
 //     try {
 //       const [p, s, v, u] = await Promise.all([
-//         axios.get("/products"),
-//         axios.get("/sales"),
-//         axios.get("/vendors"),
-//         axios.get("/users"),
+//         axios.get("/inventory/products"),
+//         axios.get("/inventory/sales"),
+//         axios.get("/inventory/vendors"),
+//         axios.get("/inventory/users"),
+//         axios.get("/inventory/purchase"),
 //       ]);
 
 //       setProducts(p.data || []);
@@ -32,13 +34,41 @@
 //     }
 //   };
 
+
+
+
+
+
+//   const loadProducts = async () => {
+//   try {
+//     const res = await axios.get("/inventory/products");
+
+//     console.log("PRODUCT API RESPONSE 👉", res.data); // 🔥 ADD THIS
+
+//     setProducts(res.data);
+//   } catch (error) {
+//     console.error("Error loading products", error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+
+
+
+
+
+
+
+
+
 //   const totalSales = sales.reduce(
 //     (sum, s) => sum + Number(s.amount || 0),
 //     0
 //   );
 
 //   const totalStock = products.reduce(
-//     (sum, p) => sum + Number(p.stock || 0),
+//     (sum, p) => sum + Number(p.productstock || 0),
 //     0
 //   );
 
@@ -50,9 +80,14 @@
 
 //         <ul>
 //           <li className="active">Dashboard</li>
-//           <li>Invoices</li>
-//           <li>Clients</li>
-//           <li>Settings</li>
+//           <li onClick={() => navigate("/products")}>Products</li>
+//           <li onClick={() => navigate("/sales")}>Sales</li>
+//           <li onClick={() => navigate("/vendor")}>Vendor</li>
+//           <li onClick={() => navigate("/stock")} >Stock</li>
+//           <li onClick={() => navigate("/user")}>User</li>
+//           <li onClick={() => navigate("/purchase")}>purchase</li>
+          
+
 //         </ul>
 
 //         <button
@@ -98,6 +133,8 @@
 //             <p>Users</p>
 //             <h2>{users.length}</h2>
 //           </div>
+
+          
 //         </section>
 
 //         {/* CONTENT GRID */}
@@ -118,12 +155,13 @@
 //                 </tr>
 //               </thead>
 //               <tbody>
+//                 {/* change this file */}
 //                 {products.map((p) => (
-//                   <tr key={p.id}>
-//                     <td>{p.name}</td>
-//                     <td>{p.vendorName}</td>
-//                     <td>{p.stock}</td>
-//                     <td>₹{p.price}</td>
+//                   <tr key={p.productId}>
+//                     <td>{p.productName}</td>
+//                     <td>{p.vendorName || "-"}</td>
+//                     <td>{p.productStock}</td>
+//                     <td>₹{p.productPrice}</td>
 //                   </tr>
 //                 ))}
 //               </tbody>
@@ -151,85 +189,52 @@
 
 // export default Dashboard;
 
-
-
 import { useEffect, useState } from "react";
 import axios from "../Apis/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
   const [products, setProducts] = useState([]);
   const [sales, setSales] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [users, setUsers] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetchDashboardData();
+    loadDashboard();
   }, []);
 
-  const fetchDashboardData = async () => {
+  // 🔥 CHANGE 1: FIXED ALL ENDPOINTS (use REAL APIs)
+  const loadDashboard = async () => {
     try {
-      const [productsRes, salesRes, vendorsRes, usersRes] =
-        await Promise.all([
-          axios.get("/inventory/products"),
-          axios.get("/sales"),
-          axios.get("/vendors"),
-          axios.get("/users"),
-        ]);
+      const [p, s, v, u] = await Promise.all([
+        axios.get("/inventory/products"), // products
+        axios.get("/sale/all"),           // sales
+        axios.get("/vendor/all"),         // vendors
+        axios.get("/user/all"),           // users
+      ]);
 
-      setProducts(productsRes.data || []);
-      setSales(salesRes.data || []);
-      setVendors(vendorsRes.data || []);
-      setUsers(usersRes.data || []);
-    } catch (error) {
-      console.error("Dashboard API error:", error);
+      setProducts(p.data || []);
+      setSales(s.data || []);
+      setVendors(v.data || []);
+      setUsers(u.data || []);
+    } catch (err) {
+      console.error("Dashboard error", err);
     }
   };
 
-  // ====================loadDashboard====================
-console.log("AXIOS BASE URL:", axios.defaults.baseURL);
-
-
-  const loadDashboard = async () => {
-  try {
-    const res = await axios.get("/inventory/products");
-    console.log("PRODUCTS FROM API:", res.data); // 🔥 DEBUG
-
-    setProducts(res.data); // ✅ ONLY THIS
-  } catch (err) {
-    console.error("Dashboard error", err);
-  }
-};
-
-
-
-
-
-
-  // Calculations
-  // const totalSales = sales.reduce(
-  //   (sum, s) => sum + Number(s.amount || 0),
-  //   0
-  // );
-
+  // 🔥 CHANGE 2: CORRECT TOTAL SALES CALCULATION
   const totalSales = sales.reduce(
-  (sum, s) => sum + Number(s.totalPrice || 0),
-  0
-);
+    (sum, s) => sum + Number(s.sellingPrice || 0),
+    0
+  );
 
-
-  // const totalStock = products.reduce(
-  //   (sum, p) => sum + Number(p.stock || 0),
-  //   0
-  // );
-
+  // 🔥 CHANGE 3: CORRECT STOCK FIELD NAME
   const totalStock = products.reduce(
-  (sum, p) => sum + Number(p.productStock || 0),
-  0
-);
-
+    (sum, p) => sum + Number(p.productStock || 0),
+    0
+  );
 
   return (
     <div className="dashboard-layout">
@@ -239,9 +244,12 @@ console.log("AXIOS BASE URL:", axios.defaults.baseURL);
 
         <ul>
           <li className="active">Dashboard</li>
-          <li>Invoices</li>
-          <li>Clients</li>
-          <li>Settings</li>
+          <li onClick={() => navigate("/products")}>Products</li>
+          <li onClick={() => navigate("/sales")}>Sales</li>
+          <li onClick={() => navigate("/vendor")}>Vendors</li>
+          <li onClick={() => navigate("/stock")}>Stock</li>
+          <li onClick={() => navigate("/user")}>Users</li>
+          <li onClick={() => navigate("/purchase")}>Purchase</li>
         </ul>
 
         <button
@@ -257,18 +265,12 @@ console.log("AXIOS BASE URL:", axios.defaults.baseURL);
 
       {/* MAIN */}
       <main className="dashboard-main">
-        <h1>Invoice Dashboard</h1>
-
-
-
-        <pre style={{ color: "white", fontSize: "12px" }}>
-  {JSON.stringify(products, null, 2)}
-</pre>
-
-
+        <header className="dashboard-header">
+          <h1>Invoice Dashboard</h1>
+        </header>
 
         {/* STATS */}
-        <div className="stats-grid">
+        <section className="stats-grid">
           <div className="stat glass">
             <p>Products</p>
             <h2>{products.length}</h2>
@@ -293,74 +295,52 @@ console.log("AXIOS BASE URL:", axios.defaults.baseURL);
             <p>Users</p>
             <h2>{users.length}</h2>
           </div>
-        </div>
+        </section>
 
-        {/* CONTENT */}
-        <div className="content-grid">
+        {/* CONTENT GRID */}
+        <section className="content-grid">
           {/* PRODUCT TABLE */}
-          <div className="glass">
-            <h3>Product Data</h3>
+          <div className="card glass wide">
+            <div className="card-header">
+              <h3>Product Data</h3>
+            </div>
 
             <table>
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Vendor</th>
                   <th>Stock</th>
                   <th>Price</th>
                 </tr>
               </thead>
-              {/* <tbody>
-                {products.map((p) => (
-                  <tr key={p.id}>
-                    <td>{p.name}</td>
-                    <td>{p.vendorName}</td>
-                    <td>{p.stock}</td>
-                    <td>₹{p.price}</td>
+              <tbody>
+                {/* 🔥 CHANGE 4: SAFE & CORRECT FIELDS */}
+                {products.slice(0, 5).map((p) => (
+                  <tr key={p.productId}>
+                    <td>{p.productName}</td>
+                    <td>{p.productStock}</td>
+                    <td>₹{p.productPrice}</td>
                   </tr>
                 ))}
-              </tbody> */}
-
-              <tbody>
-  {products.map((p) => (
-    <tr key={p.productId}>
-      <td>{p.productName}</td>
-      <td>{p.unit}</td>
-      <td>{p.productStock}</td>
-      <td>₹{p.productPrice}</td>
-    </tr>
-  ))}
-</tbody>
-
-
+              </tbody>
             </table>
           </div>
 
           {/* RECENT SALES */}
-          <div className="glass">
+          <div className="card glass">
             <h3>Recent Sales</h3>
 
-            {/* <ul className="sales-list">
+            <ul className="sales-list">
+              {/* 🔥 CHANGE 5: MATCH BACKEND SALE STRUCTURE */}
               {sales.slice(0, 5).map((s) => (
-                <li key={s.id}>
-                  <span>{s.productName}</span>
-                  <span>₹{s.amount}</span>
+                <li key={s.salesId}>
+                  <span>{s.product?.productName || "Product"}</span>
+                  <span>₹{s.sellingPrice}</span>
                 </li>
               ))}
-            </ul> */}
-
-              <ul className="sales-list">
-  {sales.slice(0, 5).map((s) => (
-    <li key={s.saleId}>
-      <span>{s.productName}</span>
-      <span>₹{s.totalPrice}</span>
-    </li>
-  ))}
-</ul>
-
-
+            </ul>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );
