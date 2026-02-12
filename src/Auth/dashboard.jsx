@@ -1,3 +1,4 @@
+
 // import { useEffect, useState } from "react";
 // import axios from "../Apis/axiosConfig";
 // import { useNavigate } from "react-router-dom";
@@ -14,15 +15,14 @@
 //     loadDashboard();
 //   }, []);
 
-// // change this file
+//   // 🔥 CHANGE 1: FIXED ALL ENDPOINTS (use REAL APIs)
 //   const loadDashboard = async () => {
 //     try {
 //       const [p, s, v, u] = await Promise.all([
-//         axios.get("/inventory/products"),
-//         axios.get("/inventory/sales"),
-//         axios.get("/inventory/vendors"),
-//         axios.get("/inventory/users"),
-//         axios.get("/inventory/purchase"),
+//         axios.get("/inventory/products"), // products
+//         axios.get("/sale/all"),           // sales
+//         axios.get("/vendor/all"),         // vendors
+//         axios.get("/user/all"),           // users
 //       ]);
 
 //       setProducts(p.data || []);
@@ -34,41 +34,15 @@
 //     }
 //   };
 
-
-
-
-
-
-//   const loadProducts = async () => {
-//   try {
-//     const res = await axios.get("/inventory/products");
-
-//     console.log("PRODUCT API RESPONSE 👉", res.data); // 🔥 ADD THIS
-
-//     setProducts(res.data);
-//   } catch (error) {
-//     console.error("Error loading products", error);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-
-
-
-
-
-
-
-
-
+//   // 🔥 CHANGE 2: CORRECT TOTAL SALES CALCULATION
 //   const totalSales = sales.reduce(
-//     (sum, s) => sum + Number(s.amount || 0),
+//     (sum, s) => sum + Number(s.sellingPrice || 0),
 //     0
 //   );
 
+//   // 🔥 CHANGE 3: CORRECT STOCK FIELD NAME
 //   const totalStock = products.reduce(
-//     (sum, p) => sum + Number(p.productstock || 0),
+//     (sum, p) => sum + Number(p.productStock || 0),
 //     0
 //   );
 
@@ -82,12 +56,10 @@
 //           <li className="active">Dashboard</li>
 //           <li onClick={() => navigate("/products")}>Products</li>
 //           <li onClick={() => navigate("/sales")}>Sales</li>
-//           <li onClick={() => navigate("/vendor")}>Vendor</li>
-//           <li onClick={() => navigate("/stock")} >Stock</li>
-//           <li onClick={() => navigate("/user")}>User</li>
-//           <li onClick={() => navigate("/purchase")}>purchase</li>
-          
-
+//           <li onClick={() => navigate("/vendor")}>Vendors</li>
+//           <li onClick={() => navigate("/stock")}>Stock</li>
+//           <li onClick={() => navigate("/user")}>Users</li>
+//           <li onClick={() => navigate("/purchase")}>Purchase</li>
 //         </ul>
 
 //         <button
@@ -133,13 +105,11 @@
 //             <p>Users</p>
 //             <h2>{users.length}</h2>
 //           </div>
-
-          
 //         </section>
 
 //         {/* CONTENT GRID */}
 //         <section className="content-grid">
-//           {/* PRODUCTS TABLE */}
+//           {/* PRODUCT TABLE */}
 //           <div className="card glass wide">
 //             <div className="card-header">
 //               <h3>Product Data</h3>
@@ -149,17 +119,15 @@
 //               <thead>
 //                 <tr>
 //                   <th>Product</th>
-//                   <th>Vendor</th>
 //                   <th>Stock</th>
 //                   <th>Price</th>
 //                 </tr>
 //               </thead>
 //               <tbody>
-//                 {/* change this file */}
-//                 {products.map((p) => (
+//                 {/* 🔥 CHANGE 4: SAFE & CORRECT FIELDS */}
+//                 {products.slice(0, 5).map((p) => (
 //                   <tr key={p.productId}>
 //                     <td>{p.productName}</td>
-//                     <td>{p.vendorName || "-"}</td>
 //                     <td>{p.productStock}</td>
 //                     <td>₹{p.productPrice}</td>
 //                   </tr>
@@ -168,15 +136,16 @@
 //             </table>
 //           </div>
 
-//           {/* SALES */}
+//           {/* RECENT SALES */}
 //           <div className="card glass">
 //             <h3>Recent Sales</h3>
 
 //             <ul className="sales-list">
+//               {/* 🔥 CHANGE 5: MATCH BACKEND SALE STRUCTURE */}
 //               {sales.slice(0, 5).map((s) => (
-//                 <li key={s.id}>
-//                   <span>{s.productName}</span>
-//                   <span>${s.amount}</span>
+//                 <li key={s.salesId}>
+//                   <span>{s.product?.productName || "Product"}</span>
+//                   <span>₹{s.sellingPrice}</span>
 //                 </li>
 //               ))}
 //             </ul>
@@ -188,6 +157,9 @@
 // }
 
 // export default Dashboard;
+
+
+
 
 import { useEffect, useState } from "react";
 import axios from "../Apis/axiosConfig";
@@ -201,22 +173,29 @@ function Dashboard() {
 
   const navigate = useNavigate();
 
+  // 🔥 CHANGE A: Reload dashboard every time page opens
   useEffect(() => {
     loadDashboard();
   }, []);
 
-  // 🔥 CHANGE 1: FIXED ALL ENDPOINTS (use REAL APIs)
   const loadDashboard = async () => {
     try {
       const [p, s, v, u] = await Promise.all([
-        axios.get("/inventory/products"), // products
-        axios.get("/sale/all"),           // sales
-        axios.get("/vendor/all"),         // vendors
-        axios.get("/user/all"),           // users
+        axios.get("/inventory/products"),
+        axios.get("/sale/all"),
+        axios.get("/vendor/all"),
+        axios.get("/user/all"),
       ]);
 
       setProducts(p.data || []);
-      setSales(s.data || []);
+
+      // 🔥 CHANGE B + C: SORT SALES BY LATEST (VERY IMPORTANT)
+      const sortedSales = (s.data || []).sort(
+        (a, b) => b.salesId - a.salesId
+      );
+
+      setSales(sortedSales);   // ✅ now latest sales come first
+
       setVendors(v.data || []);
       setUsers(u.data || []);
     } catch (err) {
@@ -224,13 +203,11 @@ function Dashboard() {
     }
   };
 
-  // 🔥 CHANGE 2: CORRECT TOTAL SALES CALCULATION
   const totalSales = sales.reduce(
     (sum, s) => sum + Number(s.sellingPrice || 0),
     0
   );
 
-  // 🔥 CHANGE 3: CORRECT STOCK FIELD NAME
   const totalStock = products.reduce(
     (sum, p) => sum + Number(p.productStock || 0),
     0
@@ -314,7 +291,6 @@ function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {/* 🔥 CHANGE 4: SAFE & CORRECT FIELDS */}
                 {products.slice(0, 5).map((p) => (
                   <tr key={p.productId}>
                     <td>{p.productName}</td>
@@ -331,7 +307,7 @@ function Dashboard() {
             <h3>Recent Sales</h3>
 
             <ul className="sales-list">
-              {/* 🔥 CHANGE 5: MATCH BACKEND SALE STRUCTURE */}
+              {/* 🔥 NOW SHOWS LATEST SALES */}
               {sales.slice(0, 5).map((s) => (
                 <li key={s.salesId}>
                   <span>{s.product?.productName || "Product"}</span>

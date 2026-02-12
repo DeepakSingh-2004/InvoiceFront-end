@@ -45,7 +45,6 @@ const Purchase = () => {
               <th>Purchase ID</th>
               <th>Date</th>
               <th>Quantity</th>
-              <th>Vendor</th>
               <th>Product ID</th>
             </tr>
           </thead>
@@ -61,7 +60,6 @@ const Purchase = () => {
                   <td>{p.purchaseId}</td>
                   <td>{p.date}</td>
                   <td>{p.quantity}</td>
-                  <td>{p.vendor?.vendorName || "-"}</td>
                   <td>{p.product?.productId || "-"}</td>
                 </tr>
               ))
